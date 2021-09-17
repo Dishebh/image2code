@@ -20,3 +20,11 @@ a {
   width: 30px;
   height: 30px;
 }
+
+.active-item {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.main {
+  text-align: center;
+}

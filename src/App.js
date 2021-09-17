@@ -15,7 +15,6 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import ImageUpload from '../src/components/ImageUpload';
 import { Avatar, Button } from '@material-ui/core';
@@ -23,6 +22,10 @@ import './App.css';
 import { fetchUser } from './actions';
 import { connect } from 'react-redux';
 import ImageCapture from './components/ImageCapture';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
+import StayCurrentLandscapeIcon from '@mui/icons-material/StayCurrentLandscape';
+import HistoryIcon from '@mui/icons-material/History';
+import GoogleIcon from '@mui/icons-material/Google';
 
 const drawerWidth = 240;
 
@@ -104,6 +107,19 @@ const renderComponent = (activeItem) => {
   }
 };
 
+const renderListIcon = (text) => {
+  switch (text) {
+    case 'Upload Image':
+      return <UploadFileIcon />;
+    case 'Capture Image':
+      return <StayCurrentLandscapeIcon />;
+    case 'History':
+      return <HistoryIcon />;
+    default:
+      return <MailIcon />;
+  }
+};
+
 function App({ user, fetchUser }) {
   const classes = useStyles();
   const theme = useTheme();
@@ -153,12 +169,17 @@ function App({ user, fetchUser }) {
                 <Typography>{user.name}</Typography>
               </Button>
               <Button color='inherit'>
-                <a href={`${baseUrl}/auth/logout`}>Logout</a>
+                <a href={`${baseUrl}/auth/logout`}>
+                  <Typography>Logout</Typography>
+                </a>
               </Button>
             </>
           ) : (
             <Button color='inherit'>
-              <a href={`${baseUrl}/auth/google`}>Login</a>
+              <GoogleIcon />
+              <a style={{ marginLeft: '5px' }} href={`${baseUrl}/auth/google`}>
+                <Typography>Login</Typography>
+              </a>
             </Button>
           )}
         </Toolbar>
@@ -188,10 +209,13 @@ function App({ user, fetchUser }) {
         <Divider />
         <List>
           {['Upload Image', 'Capture Image', 'History'].map((text, index) => (
-            <ListItem onClick={() => setActiveItem(text)} button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
+            <ListItem
+              className={text === activeItem ? 'active-item' : ''}
+              onClick={() => setActiveItem(text)}
+              button
+              key={text}
+            >
+              <ListItemIcon>{renderListIcon(text)}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
           ))}
@@ -199,7 +223,7 @@ function App({ user, fetchUser }) {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <div>{renderComponent(activeItem)}</div>
+        <div className='main'>{renderComponent(activeItem)}</div>
       </main>
     </div>
   );
