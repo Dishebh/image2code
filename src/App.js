@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -22,7 +22,7 @@ import { Avatar, Button } from '@material-ui/core';
 import './App.css';
 import { fetchUser } from './actions';
 import { connect } from 'react-redux';
-import { AccountCircle } from '@material-ui/icons';
+import ImageCapture from './components/ImageCapture';
 
 const drawerWidth = 240;
 
@@ -93,10 +93,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const renderComponent = (activeItem) => {
+  switch (activeItem) {
+    case 'Upload Image':
+      return <ImageUpload />;
+    case 'Capture Image':
+      return <ImageCapture />;
+    default:
+      return <></>;
+  }
+};
+
 function App({ user, fetchUser }) {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [activeItem, setActiveItem] = useState('Upload Image');
 
   useEffect(() => {
     fetchUser();
@@ -109,8 +121,6 @@ function App({ user, fetchUser }) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
-  console.log('user', user);
 
   return (
     <div className={classes.root}>
@@ -177,8 +187,8 @@ function App({ user, fetchUser }) {
         </div>
         <Divider />
         <List>
-          {['Capture Image', 'History'].map((text, index) => (
-            <ListItem button key={text}>
+          {['Upload Image', 'Capture Image', 'History'].map((text, index) => (
+            <ListItem onClick={() => setActiveItem(text)} button key={text}>
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
               </ListItemIcon>
@@ -189,9 +199,7 @@ function App({ user, fetchUser }) {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <div>
-          <ImageUpload />
-        </div>
+        <div>{renderComponent(activeItem)}</div>
       </main>
     </div>
   );

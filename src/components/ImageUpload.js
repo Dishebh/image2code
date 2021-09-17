@@ -23,7 +23,7 @@ function ImageUpload() {
         color='primary'
         component='label'
       >
-        Upload File
+        Upload Image
         <input hidden accept='image/' type='file' onChange={handleUpload} />
       </Button>
 
