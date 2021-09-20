@@ -12,8 +12,10 @@
     "add": "^2.0.6",
     "axios": "^0.21.4",
     "clsx": "^1.1.1",
+    "codemirror": "^5.63.0",
     "http-proxy-middleware": "^2.0.1",
     "react": "^17.0.2",
+    "react-codemirror2": "^7.2.1",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.5",
     "react-router-dom": "^5.3.0",
@@ -22,6 +24,7 @@
     "redux": "^4.1.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
+    "tesseract.js": "^2.1.5",
     "web-vitals": "^1.0.1"
   },
   "scripts": {

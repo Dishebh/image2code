@@ -1,6 +1,18 @@
 import { Button, Typography } from '@material-ui/core';
 import { useState } from 'react';
+import { connect, useDispatch } from 'react-redux';
+import { fetchText } from '../actions';
 import './ImageUpload.css';
+import Tesseract from 'tesseract.js';
+import {
+  FETCH_ERROR,
+  FETCH_TEXT,
+  FETCH_TEXT_SUCCESS,
+  REMOVE_TEXT,
+} from '../actions/types';
+import TextEditor from './TextEditor/TextEditor';
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const ImageThumb = ({ image }) => {
   return (
@@ -12,21 +24,76 @@ const ImageThumb = ({ image }) => {
   );
 };
 
-function ImageUpload() {
+// function blobToBase64(blob) {
+//   return new Promise((resolve, _) => {
+//     const reader = new window.FileReader();
+//     reader.onloadend = () => resolve(reader.result);
+//     reader.readAsDataURL(blob);
+//   });
+// }
+
+const flaskUrl = 'http://localhost:8000/';
+const nodeUrl = 'http://localhost:5000/api/';
+
+function ImageUpload({ fetchText, text, isTextLoading }) {
+  const dispatch = useDispatch();
+
   const [file, setFile] = useState('');
 
   function handleUpload(e) {
     e.target.files.length > 0 && setFile(e.target.files[0]);
   }
 
+  function scrollToEditor() {
+    const editor = document.getElementById('text-editor');
+
+    editor.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function removeImage() {
+    setFile('');
+    dispatch({ type: REMOVE_TEXT });
+  }
+
+  async function sendImage() {
+    dispatch({ type: FETCH_TEXT });
+
+    const image = URL.createObjectURL(file);
+
+    // const imgData = await fetch(image);
+    // const imgDataBlob = await imgData.blob();
+    // const imgDataBase = await blobToBase64(imgDataBlob);
+
+    // await fetchText(image);
+
+    Tesseract.recognize(image, 'eng', {
+      // logger: (m) => console.log(m)
+    })
+      .then(({ data: { text } }) => {
+        // console.log(text);
+        dispatch({ type: FETCH_TEXT_SUCCESS, payload: text });
+        scrollToEditor();
+      })
+      .catch((e) => {
+        dispatch({ type: FETCH_ERROR });
+      });
+  }
+
   return (
     <div>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isTextLoading}
+      >
+        <CircularProgress color='inherit' />
+      </Backdrop>
       <div className='button-container'>
         <Button
           className='upload-button'
           variant='contained'
           color='primary'
           component='label'
+          onClick={file !== '' ? removeImage : () => {}}
         >
           {file === '' ? 'Upload Image' : 'Upload another image'}
           <input hidden accept='image/' type='file' onChange={handleUpload} />
@@ -35,7 +102,7 @@ function ImageUpload() {
           disabled={file === '' ? true : false}
           variant='contained'
           color='secondary'
-          onClick={() => setFile('')}
+          onClick={removeImage}
         >
           Remove Image
         </Button>
@@ -47,8 +114,24 @@ function ImageUpload() {
       <hr style={{ width: '70%' }} />
 
       {file && <ImageThumb image={file} />}
+      <div className='submit-btn'>
+        <Button
+          color='primary'
+          disabled={file === '' ? true : false}
+          variant='contained'
+          onClick={sendImage}
+        >
+          Submit
+        </Button>
+      </div>
+      {text.length > 0 && <TextEditor />}
     </div>
   );
 }
 
-export default ImageUpload;
+const mapStateToProps = (state) => ({
+  text: state.text.text,
+  isTextLoading: state.text.isTextLoading,
+});
+
+export default connect(mapStateToProps, { fetchText })(ImageUpload);

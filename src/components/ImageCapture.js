@@ -56,6 +56,15 @@ function ImageCapture() {
         <></>
       )}
       {imgSrc && <img className='capture-image' src={imgSrc} alt='preview' />}
+      <div className='submit-btn'>
+        <Button
+          colo='primary'
+          disabled={imgSrc === null ? true : false}
+          variant='contained'
+        >
+          Submit
+        </Button>
+      </div>
     </div>
   );
 }

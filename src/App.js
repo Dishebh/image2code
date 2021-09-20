@@ -17,7 +17,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
 import ImageUpload from '../src/components/ImageUpload';
-import { Avatar, Button } from '@material-ui/core';
+import { Avatar, Button, Tooltip } from '@material-ui/core';
 import './App.css';
 import { fetchUser } from './actions';
 import { connect } from 'react-redux';
@@ -209,15 +209,18 @@ function App({ user, fetchUser }) {
         <Divider />
         <List>
           {['Upload Image', 'Capture Image', 'History'].map((text, index) => (
-            <ListItem
-              className={text === activeItem ? 'active-item' : ''}
-              onClick={() => setActiveItem(text)}
-              button
-              key={text}
-            >
-              <ListItemIcon>{renderListIcon(text)}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
+            <Tooltip key={text} title={text}>
+              <ListItem
+                className={text === activeItem ? 'active-item' : ''}
+                onClick={() => setActiveItem(text)}
+                button
+                key={text}
+                disabled={text === 'History' && !Object.keys(user).length}
+              >
+                <ListItemIcon>{renderListIcon(text)}</ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            </Tooltip>
           ))}
         </List>
       </Drawer>
