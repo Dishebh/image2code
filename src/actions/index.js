@@ -12,7 +12,7 @@ export const fetchUser = () => async (dispatch) => {
 
     dispatch({ type: FETCH_USER, payload: res.data });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     dispatch({
       type: FETCH_ERROR,
     });
