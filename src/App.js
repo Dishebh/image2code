@@ -160,7 +160,7 @@ function App({ user, fetchUser }) {
             <MenuIcon />
           </IconButton>
           <Typography variant='h6' noWrap>
-            Image2Code
+            Image-IDE
           </Typography>
           {Object.keys(user).length ? (
             <>
