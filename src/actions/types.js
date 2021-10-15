@@ -1,3 +1,4 @@
+// Action types
 export const FETCH_USER = 'FETCH_USER';
 export const FETCH_TEXT = 'FETCH_TEXT';
 export const FETCH_TEXT_SUCCESS = 'FETCH_TEXT_SUCCESS';
