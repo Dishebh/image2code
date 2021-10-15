@@ -96,6 +96,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+// Custom function to render component
 const renderComponent = (activeItem) => {
   switch (activeItem) {
     case 'Upload Image':
