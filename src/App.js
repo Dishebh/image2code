@@ -27,6 +27,7 @@ import StayCurrentLandscapeIcon from '@mui/icons-material/StayCurrentLandscape';
 import HistoryIcon from '@mui/icons-material/History';
 import GoogleIcon from '@mui/icons-material/Google';
 
+// Set drawer width
 const drawerWidth = 240;
 
 const baseUrl =
