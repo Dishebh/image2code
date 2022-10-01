@@ -52,8 +52,6 @@ function ImageUpload({ fetchText, text, isTextLoading }) {
 
     const image = URL.createObjectURL(file);
 
-    // await fetchText(image);
-
     Tesseract.recognize(image, 'eng', {
       // logger: (m) => console.log(m)
     })
