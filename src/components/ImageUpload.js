@@ -52,10 +52,6 @@ function ImageUpload({ fetchText, text, isTextLoading }) {
 
     const image = URL.createObjectURL(file);
 
-    // const imgData = await fetch(image);
-    // const imgDataBlob = await imgData.blob();
-    // const imgDataBase = await blobToBase64(imgDataBlob);
-
     // await fetchText(image);
 
     Tesseract.recognize(image, 'eng', {
