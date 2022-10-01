@@ -13,8 +13,6 @@ function ImageCapture() {
   }, [webcamRef, setImgSrc]);
 
   const videoConstraints = {
-    // width: 2900,
-    // height: 420,
     facingMode: 'environment',
   };
 
