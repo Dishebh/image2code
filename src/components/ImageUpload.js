@@ -24,14 +24,6 @@ const ImageThumb = ({ image }) => {
   );
 };
 
-// function blobToBase64(blob) {
-//   return new Promise((resolve, _) => {
-//     const reader = new window.FileReader();
-//     reader.onloadend = () => resolve(reader.result);
-//     reader.readAsDataURL(blob);
-//   });
-// }
-
 const flaskUrl = 'http://localhost:8000/';
 const nodeUrl = 'http://localhost:5000/api/';
 
